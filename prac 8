@@ -1,0 +1,119 @@
+interface Beverage {
+    String getDescription();
+    double cost();
+}
+
+class Espresso implements Beverage {
+    public String getDescription() {
+        return "Espresso";
+    }
+    public double cost() {
+        return 2.0;
+    }
+}
+
+class Tea implements Beverage {
+    public String getDescription() {
+        return "Tea";
+    }
+    public double cost() {
+        return 1.5;
+    }
+}
+
+class Latte implements Beverage {
+    public String getDescription() {
+        return "Latte";
+    }
+    public double cost() {
+        return 2.5;
+    }
+}
+
+abstract class BeverageDecorator implements Beverage {
+    protected Beverage beverage;
+    public BeverageDecorator(Beverage beverage) {
+        this.beverage = beverage;
+    }
+}
+
+class Milk extends BeverageDecorator {
+    public Milk(Beverage beverage) {
+        super(beverage);
+    }
+    public String getDescription() {
+        return beverage.getDescription() + ", Milk";
+    }
+    public double cost() {
+        return beverage.cost() + 0.5;
+    }
+}
+
+class Sugar extends BeverageDecorator {
+    public Sugar(Beverage beverage) {
+        super(beverage);
+    }
+    public String getDescription() {
+        return beverage.getDescription() + ", Sugar";
+    }
+    public double cost() {
+        return beverage.cost() + 0.2;
+    }
+}
+
+class WhippedCream extends BeverageDecorator {
+    public WhippedCream(Beverage beverage) {
+        super(beverage);
+    }
+    public String getDescription() {
+        return beverage.getDescription() + ", Whipped Cream";
+    }
+    public double cost() {
+        return beverage.cost() + 0.7;
+    }
+}
+
+interface IPaymentProcessor {
+    void processPayment(double amount);
+}
+
+class PayPalPaymentProcessor implements IPaymentProcessor {
+    public void processPayment(double amount) {
+        System.out.println("Paid with PayPal: " + amount);
+    }
+}
+
+class StripePaymentService {
+    public void makeTransaction(double totalAmount) {
+        System.out.println("Paid with Stripe: " + totalAmount);
+    }
+}
+
+class StripePaymentAdapter implements IPaymentProcessor {
+    private StripePaymentService stripe;
+    public StripePaymentAdapter(StripePaymentService stripe) {
+        this.stripe = stripe;
+    }
+    public void processPayment(double amount) {
+        stripe.makeTransaction(amount);
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        Beverage drink = new Espresso();
+        drink = new Milk(drink);
+        drink = new Sugar(drink);
+        System.out.println(drink.getDescription() + " = " + drink.cost());
+
+        Beverage drink2 = new Latte();
+        drink2 = new WhippedCream(drink2);
+        System.out.println(drink2.getDescription() + " = " + drink2.cost());
+
+        IPaymentProcessor paypal = new PayPalPaymentProcessor();
+        paypal.processPayment(100);
+
+        IPaymentProcessor stripe = new StripePaymentAdapter(new StripePaymentService());
+        stripe.processPayment(200);
+    }
+}

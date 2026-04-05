@@ -1,0 +1,137 @@
+import java.util.*;
+
+public class Main {
+
+    static class TV {
+        void on() { System.out.println("TV on"); }
+        void off() { System.out.println("TV off"); }
+    }
+
+    static class AudioSystem {
+        void on() { System.out.println("Audio on"); }
+        void off() { System.out.println("Audio off"); }
+        void setVolume(int v) { System.out.println("Volume " + v); }
+    }
+
+    static class DVDPlayer {
+        void play() { System.out.println("DVD play"); }
+        void stop() { System.out.println("DVD stop"); }
+    }
+
+    static class GameConsole {
+        void on() { System.out.println("Console on"); }
+        void startGame() { System.out.println("Game start"); }
+    }
+
+    static class HomeTheaterFacade {
+        TV tv;
+        AudioSystem audio;
+        DVDPlayer dvd;
+        GameConsole console;
+
+        HomeTheaterFacade(TV t, AudioSystem a, DVDPlayer d, GameConsole c) {
+            tv = t;
+            audio = a;
+            dvd = d;
+            console = c;
+        }
+
+        void watchMovie() {
+            tv.on();
+            audio.on();
+            audio.setVolume(10);
+            dvd.play();
+        }
+
+        void offAll() {
+            dvd.stop();
+            audio.off();
+            tv.off();
+        }
+
+        void playGame() {
+            tv.on();
+            console.on();
+            console.startGame();
+        }
+    }
+
+    static abstract class FileSystemComponent {
+        abstract void display(String s);
+        abstract int getSize();
+    }
+
+    static class File extends FileSystemComponent {
+        String name;
+        int size;
+
+        File(String n, int s) {
+            name = n;
+            size = s;
+        }
+
+        void display(String s) {
+            System.out.println(s + name + " " + size);
+        }
+
+        int getSize() {
+            return size;
+        }
+    }
+
+    static class Directory extends FileSystemComponent {
+        String name;
+        List<FileSystemComponent> list = new ArrayList<>();
+
+        Directory(String n) {
+            name = n;
+        }
+
+        void add(FileSystemComponent c) {
+            if (!list.contains(c)) list.add(c);
+        }
+
+        void remove(FileSystemComponent c) {
+            list.remove(c);
+        }
+
+        void display(String s) {
+            System.out.println(s + name);
+            for (FileSystemComponent c : list) {
+                c.display(s + "  ");
+            }
+        }
+
+        int getSize() {
+            int sum = 0;
+            for (FileSystemComponent c : list) sum += c.getSize();
+            return sum;
+        }
+    }
+
+    public static void main(String[] args) {
+        HomeTheaterFacade home = new HomeTheaterFacade(
+                new TV(),
+                new AudioSystem(),
+                new DVDPlayer(),
+                new GameConsole()
+        );
+
+        home.watchMovie();
+        home.offAll();
+        home.playGame();
+
+        Directory root = new Directory("root");
+        Directory folder = new Directory("folder");
+
+        File f1 = new File("a.txt", 100);
+        File f2 = new File("b.txt", 200);
+
+        folder.add(f1);
+        root.add(folder);
+        root.add(f2);
+
+        root.display("");
+        System.out.println(root.getSize());
+    }
+}

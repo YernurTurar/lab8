@@ -2,37 +2,37 @@ import java.util.*;
 
 class RoomBookingSystem {
     void bookRoom(String name) {
-        System.out.println("Room booked for " + name);
+        System.out.println("Номер забронирован для " + name);
     }
     void cancelRoom(String name) {
-        System.out.println("Room canceled for " + name);
+        System.out.println("Бронирование номера отменено для " + name);
     }
 }
 
 class RestaurantSystem {
     void bookTable(String name) {
-        System.out.println("Table booked for " + name);
+        System.out.println("Стол забронирован для " + name);
     }
     void orderFood(String name) {
-        System.out.println("Food ordered for " + name);
+        System.out.println("Еда заказана для " + name);
     }
 }
 
 class EventManagementSystem {
     void organizeEvent(String event) {
-        System.out.println("Event organized: " + event);
+        System.out.println("Мероприятие организовано: " + event);
     }
 }
 
 class CleaningService {
     void scheduleCleaning(String room) {
-        System.out.println("Cleaning scheduled for " + room);
+        System.out.println("Уборка запланирована для " + room);
     }
 }
 
 class TaxiService {
     void callTaxi(String name) {
-        System.out.println("Taxi called for " + name);
+        System.out.println("Такси вызвано для " + name);
     }
 }
 
@@ -46,7 +46,7 @@ class HotelFacade {
     void bookRoomWithServices(String name) {
         room.bookRoom(name);
         restaurant.orderFood(name);
-        cleaning.scheduleCleaning("Room of " + name);
+        cleaning.scheduleCleaning("комнаты " + name);
     }
 
     void organizeEvent(String eventName, String guest) {
@@ -92,7 +92,7 @@ class Employee extends OrganizationComponent {
     }
 
     void show() {
-        System.out.println(name + " " + position + " " + salary);
+        System.out.println(name + " " + position + " зарплата: " + salary);
     }
 }
 
@@ -127,7 +127,7 @@ class Department extends OrganizationComponent {
     }
 
     void show() {
-        System.out.println("Department: " + name);
+        System.out.println("Отдел: " + name);
         for (OrganizationComponent c : list)
             c.show();
     }
@@ -137,19 +137,19 @@ public class Main {
     public static void main(String[] args) {
         HotelFacade hotel = new HotelFacade();
 
-        hotel.bookRoomWithServices("Ernur");
-        hotel.organizeEvent("Conference", "Guests");
-        hotel.bookTableWithTaxi("Ernur");
-        hotel.cancelBooking("Ernur");
+        hotel.bookRoomWithServices("Ернур");
+        hotel.organizeEvent("Конференция", "Гости");
+        hotel.bookTableWithTaxi("Ернур");
+        hotel.cancelBooking("Ернур");
 
-        Department company = new Department("Company");
+        Department company = new Department("Компания");
 
         Department it = new Department("IT");
         Department hr = new Department("HR");
 
-        Employee e1 = new Employee("A", "Dev", 1000);
-        Employee e2 = new Employee("B", "Dev", 1200);
-        Employee e3 = new Employee("C", "HR", 800);
+        Employee e1 = new Employee("А", "Разработчик", 1000);
+        Employee e2 = new Employee("Б", "Разработчик", 1200);
+        Employee e3 = new Employee("С", "HR", 800);
 
         it.add(e1);
         it.add(e2);
@@ -160,7 +160,7 @@ public class Main {
 
         company.show();
 
-        System.out.println(company.getSalary());
-        System.out.println(company.getEmployeeCount());
+        System.out.println("Общий бюджет: " + company.getSalary());
+        System.out.println("Количество сотрудников: " + company.getEmployeeCount());
     }
 }
